@@ -1,9 +1,15 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -15,6 +21,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
+
 import java.util.*;
 
 
@@ -23,20 +30,9 @@ public class Main extends Application{
 	
 	Stage window;
 	
-	Scene scene1, scene2;
+	Scene scene1;
 	
-	int count = 1;
-	
-	int recX = 0;
-	int recY = 0;
-
-	Random random = new Random();
-	
-	Button button1, button2;
-	
-
-	int x = 200-10;
-	int y = 200-10;
+	Button button1,button2;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -47,69 +43,93 @@ public class Main extends Application{
 		
 		window= primaryStage;
 		
-		window.setTitle("Test!");
+		window.setMinWidth(250);
 		
+		window.setMinHeight(250);
 		
+		window.setTitle("Main!");
 		
-		Rectangle rec = new Rectangle(recX, recY, 40, 40);
+		window.setOnCloseRequest(e -> {
+			e.consume();
+			close();
+		});
 		
-		Label label = new Label("Press to go to scene 2!");
+		//-----------------------------TEXTS----------------------------
 		
-		//---------------------------------------------------------------
+		Text user = new Text("Username:");
 		
-		button1 = new Button("Click me!");
+		Text pass = new Text("Password:");
 		
-		button1.setLayoutX(x);
-		button1.setLayoutY(y);
+		//----------------------------BUTTONS---------------------------
+		
+		button1 = new Button("Log in!");
 		
 		button1.setOnAction(e -> {
 			
-			window.setScene(scene2);
-			window.show();
+			Alert.display("Logged in!", "Hi baby :3");
 			
 		});
 		
-		//---------------------------------------------------------------
-		
-		button2 = new Button("Go back!");
-		
-		button2.setLayoutX(x);
-		button2.setLayoutY(y);
-		
-		
+		button2 = new Button("Cancel");
 		
 		button2.setOnAction(e -> {
 			
-			window.setScene(scene1);
-			window.show();
+			boolean confirm = Confirm.window("Confirmation", "Are you sure you want to close the window?");
+			
+			if(confirm){
+				
+			close();
+			}
 			
 		});
+
+		//---------------------------TEXTFIELDS-----------------------
 		
-		Text text = new Text("This is a text!");
-		text.setFont(Font.font("verdana",FontWeight.BLACK,FontPosture.REGULAR,40));
+		TextField userField = new TextField();
+		
+		userField.setPromptText("Username");
+		
+		TextField passField = new TextField();
+		
+		passField.setPromptText("Password");
 		
 		//-------------------------------------------------------------
 		
-		VBox layout1 = new VBox();
+		GridPane grid = new GridPane();
 		
-		layout1.getChildren().addAll(label, button1, text);
-
-		scene1 = new Scene(layout1, Color.GRAY);
+		grid.setPadding(new Insets(10,10,10,10));
+		
+		grid.setVgap(10);
+		
+		grid.setHgap(10);
+		
+		scene1 = new Scene(grid, 250, 250, Color.GRAY);
+		
+		//------------------------------------------------------------
+		
+		GridPane.setConstraints(user, 0, 0);
+		
+		GridPane.setConstraints(userField,1,0);
+		
+		GridPane.setConstraints(pass, 0, 1);
+		
+		GridPane.setConstraints(passField, 1, 1);
+		
+		GridPane.setConstraints(button1, 1, 15);
+		
+		GridPane.setConstraints(button2, 0, 15);
 				
 		//-------------------------------------------------------------
 		
-		Pane layout2 = new Pane();
-		
-		layout2.getChildren().addAll(button2, rec);
-			
-		scene2 = new Scene(layout2, 400,400, Color.GRAY);
-
-		//-------------------------------------------------------------
-		
+		grid.getChildren().addAll(user,pass,userField,passField,button1,button2);
 		
 		window.setScene(scene1);
 		
 		window.show();
 		
+	}
+	private void close(){
+		System.out.println("Closing...");
+		Platform.exit();
 	}
 }
