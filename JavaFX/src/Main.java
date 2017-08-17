@@ -7,8 +7,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -22,9 +24,8 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.*;
-
-
 
 public class Main extends Application{
 	
@@ -33,6 +34,10 @@ public class Main extends Application{
 	Scene scene1;
 	
 	Button button1,button2;
+		
+	String[] usernames = {"Eduardo","Andres","Daniel"};
+	
+	String[] passwords = {"eduardo","andres","daniel"};
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -54,19 +59,47 @@ public class Main extends Application{
 			close();
 		});
 		
+
+		
 		//-----------------------------TEXTS----------------------------
 		
 		Text user = new Text("Username:");
 		
 		Text pass = new Text("Password:");
 		
-		//----------------------------BUTTONS---------------------------
+		//---------------------------TEXTFIELDS-----------------------
 		
+		TextField userField = new TextField();
+				
+		userField.setPromptText("Username");
+				
+		PasswordField passField = new PasswordField();
+				
+		passField.setPromptText("Password");
+		
+		//----------------------------BUTTONS---------------------------
+						
 		button1 = new Button("Log in!");
 		
 		button1.setOnAction(e -> {
 			
-			Alert.display("Logged in!", "Hi baby :3");
+			if(login(userField.getText(),passField.getText())){
+			
+				try {
+					Alert.display("Logged in!", "Welcome "+userField.getText()+"!",
+							userField.getText(), passField.getText());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+			
+			}
+			if(!login(userField.getText(),passField.getText())){
+				Alert.display("Error!", "Wrong username or password!");
+			}
 			
 		});
 		
@@ -83,15 +116,7 @@ public class Main extends Application{
 			
 		});
 
-		//---------------------------TEXTFIELDS-----------------------
 		
-		TextField userField = new TextField();
-		
-		userField.setPromptText("Username");
-		
-		TextField passField = new TextField();
-		
-		passField.setPromptText("Password");
 		
 		//-------------------------------------------------------------
 		
@@ -115,9 +140,9 @@ public class Main extends Application{
 		
 		GridPane.setConstraints(passField, 1, 1);
 		
-		GridPane.setConstraints(button1, 1, 15);
+		GridPane.setConstraints(button1, 1, 14);
 		
-		GridPane.setConstraints(button2, 0, 15);
+		GridPane.setConstraints(button2, 0, 14);
 				
 		//-------------------------------------------------------------
 		
@@ -131,5 +156,15 @@ public class Main extends Application{
 	private void close(){
 		System.out.println("Closing...");
 		Platform.exit();
+	}
+	private boolean login(String user, String pass){
+				
+		for(int i = 0; i < usernames.length; i++){
+			if(usernames[i].equals(user)){
+				if(passwords[i].equals(pass)){
+					return true;
+				}
+			}
+		}return false;
 	}
 }

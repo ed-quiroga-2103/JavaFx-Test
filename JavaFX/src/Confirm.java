@@ -19,18 +19,18 @@ public class Confirm {
 		
 		window.initModality(Modality.APPLICATION_MODAL);
 		
-		
-		
 		window.setTitle(title);
 		
-		Text text = new Text(message);
 		
+		Text text = new Text(message);
+				
 		text.setFont(new Font(12));
 		
 		VBox layout = new VBox(20);
 	
-		Scene scene = new Scene(layout , 300, 200);
+		Scene scene = new Scene(layout);
 	
+		
 		
 		yes= new Button("Yes");
 		
